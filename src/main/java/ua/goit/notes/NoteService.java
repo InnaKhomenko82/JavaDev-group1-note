@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 public class NoteService extends BaseService<Note, NoteDto> implements HtmlConverter {
 
-    private final int SHORT_TEXT_LENGTH = 50;
+    int SHORT_TEXT_LENGTH = 100;
     NoteRepository repository;
     UserRepository userRepository;
 
@@ -49,7 +49,6 @@ public class NoteService extends BaseService<Note, NoteDto> implements HtmlConve
             }
             dtoList.add(map);
         });
-
         return dtoList;
     }
 

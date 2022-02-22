@@ -17,6 +17,7 @@ import ua.goit.validation.unique.OnUpdate;
 import javax.validation.ConstraintViolationException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -93,9 +94,11 @@ public class UserController {
     }
 
     @GetMapping("/removeLogout")
-    public String removeLogout(Principal principal) {
-        UserDto user = userService.findByName(principal.getName());
-        userService.delete(user.getId());
+    public String removeLogout(Principal principal, Model model) {
+        if ("admin".equals(principal.getName().toLowerCase(Locale.ROOT))) {
+            return "redirect:/note/list";
+        }
+        userService.delete(userService.findByName(principal.getName()).getId());
         return "redirect:/logout";
     }
 

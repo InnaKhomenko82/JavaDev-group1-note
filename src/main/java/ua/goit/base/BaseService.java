@@ -20,11 +20,7 @@ abstract public class BaseService<E extends BaseEntity<UUID>, D extends BaseDto>
 
     private final Class<E> entityClass;
     private final Class<D> dtoClass;
-
-    @Autowired
     protected JpaRepository<E, UUID> repository;
-
-    @Autowired
     protected ModelMapper modelMapper;
 
     @SuppressWarnings("unchecked")
@@ -32,6 +28,16 @@ abstract public class BaseService<E extends BaseEntity<UUID>, D extends BaseDto>
         Type[] params = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments();
         entityClass = (Class<E>) params[0];
         dtoClass = (Class<D>) params[1];
+    }
+
+    @Autowired
+    public void setRepository(JpaRepository<E, UUID> repository) {
+        this.repository = repository;
+    }
+
+    @Autowired
+    public void setModelMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
     }
 
     public List<D> findAll() {

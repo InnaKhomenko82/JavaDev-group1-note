@@ -1,17 +1,19 @@
 package ua.goit.validation.deleteRole;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import ua.goit.users.UserService;
-import ua.goit.validation.deleteRole.UserExistValidation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.UUID;
 
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 public class UserExistValidator implements ConstraintValidator<UserExistValidation, UUID> {
 
-    @Autowired
-    private UserService userService;
+    UserService userService;
 
     @Override
     public boolean isValid(UUID value, ConstraintValidatorContext cont) {

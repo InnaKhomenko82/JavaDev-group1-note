@@ -1,13 +1,15 @@
+
+
 <html  xmlns:th="https://www.thymeleaf.org/">
 <head>
-    <title> Show note</title>
+    <title th:text="'📝 ' + ${note.name} + ' by ' + ${userName}"></title>
     <thymeleaf th:include="headers::head"></thymeleaf>
 </head>
 <body>
 <div><br></div>
 <div class="container">
-    <div class="card border-primary mb-3" style="max-width:40%">
-        <div class="card-header" th:text="${note.name}"> </div>
+    <div class="card border-primary mb-3" style="max-width:45%">
+        <div class="card-header" th:text="'📝 ' + ${note.name}"> </div>
         <div class="badge rounded-pill bg-primary" th:text="'Note by ' + ${userName}"> </div>
         <div class="card-body">
            <div th:utext="${htmlContent}"></div>

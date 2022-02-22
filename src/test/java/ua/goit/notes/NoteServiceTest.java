@@ -1,49 +1,49 @@
 package ua.goit.notes;
 
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ComponentScan("ua.goit.notes.*")
-@RunWith(SpringRunner.class)
-@DataJpaTest
 @ActiveProfiles("dev")
-//@SpringBootTest
-//@Import({SpringSecurityConfiguration.class, MvcConfiguration.class})
-//@EnableWebMvc
+@SpringBootTest
 class NoteServiceTest {
 
-    @Autowired
-    private NoteService noteService;
+    private final NoteService noteService;
 
-    @Test
-    public void insertNote() {
-        NoteDto noteDto = new NoteDto();
+    private NoteDto noteDto;
+
+    @Autowired
+    public NoteServiceTest(NoteService noteService) {
+        this.noteService = noteService;
+    }
+
+    @BeforeEach
+    private void init() {
+        noteDto = new NoteDto();
         noteDto.setName("test note");
         noteDto.setText("bla bla bla");
+    }
 
+    @WithMockUser("user1")
+    @Test
+    public void insertNote() {
         NoteDto saved = noteService.create(noteDto);
         NoteDto found = noteService.find(saved.getId());
 
         assertThat(found).isEqualTo(saved);
     }
 
+    @WithMockUser("user1")
     @Test
     public void updateNote() {
-
-        NoteDto noteDto = new NoteDto();
-        noteDto.setName("test note");
-        noteDto.setText("bla bla bla");
-
         NoteDto created = noteService.create(noteDto);
         noteDto.setText("la la la");
         noteService.update(created.getId(), noteDto);
@@ -52,13 +52,9 @@ class NoteServiceTest {
         assertThat(updated).isEqualTo(noteDto);
     }
 
+    @WithMockUser("user1")
     @Test
     public void getNote() {
-
-        NoteDto noteDto = new NoteDto();
-        noteDto.setName("test note");
-        noteDto.setText("bla bla bla");
-
         NoteDto created = noteService.create(noteDto);
         noteDto.setText("la la la");
         noteService.update(created.getId(), noteDto);
@@ -67,13 +63,9 @@ class NoteServiceTest {
         assertThat(updated.getId()).isEqualTo(noteDto.getId());
     }
 
+    @WithMockUser("user1")
     @Test
     public void deleteNote() {
-
-        NoteDto noteDto = new NoteDto();
-        noteDto.setName("test note");
-        noteDto.setText("bla bla bla");
-
         NoteDto created = noteService.create(noteDto);
         UUID uuid = created.getId();
         noteService.delete(uuid);
@@ -81,4 +73,5 @@ class NoteServiceTest {
 
         assertThat(found).isEqualTo(new NoteDto());
     }
+
 }

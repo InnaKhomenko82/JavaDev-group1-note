@@ -1,20 +1,18 @@
 package ua.goit.validation.unique;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import ua.goit.base.BaseDto;
 import ua.goit.base.BaseService;
-import ua.goit.validation.unique.UniqueValidation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+@RequiredArgsConstructor
 public class UniqueValidator implements ConstraintValidator<UniqueValidation, BaseDto> {
 
     private BaseService<?, ?> modelService;
-
-    @Autowired
-    private ApplicationContext context;
+    private final ApplicationContext context;
 
     @Override
     public void initialize(UniqueValidation constraintAnnotation) {
